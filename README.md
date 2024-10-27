@@ -1,4 +1,4 @@
-# cloudflare-ddns-with-webGUI
+# cloudflare-ddns-webGUI
 
 Configure Cloudflare DDNS easily with webGUI that hosts on a docker image
 
