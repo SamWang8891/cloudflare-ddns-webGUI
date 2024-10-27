@@ -1,0 +1,13 @@
+services:
+  myservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cloudflare-ddns
+    volumes:
+      - ./app:/app
+      - ./app/nginx/nginx.conf:/etc/nginx/sites-available/default
+    ports:
+      - "8888:80" # Host:Container
+    container_name: cloudflare-ddns
+    restart: unless-stopped
