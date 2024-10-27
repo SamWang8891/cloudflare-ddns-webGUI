@@ -1,0 +1,4 @@
+.env
+*.ignore
+old_*.*
+update-dns.log
