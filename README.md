@@ -6,7 +6,7 @@ Configure update Cloudflare DNS A record script easily with webGUI that hosts on
 
 1. Git clone to your choosen destination
 
-   `git clone https://github.com/SamWang8891TW/cloudflare-ddns-webGUI.git`
+   `git clone https://github.com/SamWang8891/cloudflare-ddns-webGUI.git`
 2. run setup.sh
 
    `bash setup.sh` or `sudo bash setup.sh`
