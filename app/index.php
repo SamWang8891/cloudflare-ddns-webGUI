@@ -134,10 +134,8 @@
         </div>
 
         <h2>Update Crontab:</h2>
-        <h4>1) Note that currently ONLY ONE LINE is supported, adding a new one will rewrite the old one.</h4>
-        <h4>2) Update with blank to remove the line.</h4>
-        <h4>3) Format: min hour day_of_month month day_of_week</h4>
-        <h4>4) For execute every minute, type "* * * * *"</h4>
+        <h4>Format: min hour day_of_month month day_of_week</h4>
+        <h4>To execute every minute, type "* * * * *"</h4>
         <form method="post" action="" class="form">
             <label for="crontab">Crontab Entry:</label>
             <input type="text" id="crontab" name="crontab"><br>
