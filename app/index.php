@@ -137,7 +137,7 @@
         <h4>Format: min hour day_of_month month day_of_week</h4>
         <h4>To execute every minute, type "* * * * *"</h4>
         <form method="post" action="" class="form">
-            <label for="crontab">Crontab Entry:</label>
+            <label for="crontab">Crontab:</label>
             <input type="text" id="crontab" name="crontab"><br>
 
             <input type="submit" name="update_crontab" value="Update Crontab">
