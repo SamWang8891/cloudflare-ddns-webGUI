@@ -10,7 +10,7 @@ Configure update Cloudflare DNS A record script easily with webGUI that hosts on
 2. run setup.sh
 
    `bash setup.sh` or `sudo bash setup.sh`
-3. Visit the website on port 8888 using http
+3. Visit the website on localhost:8888
 4. Have fun!
 
 ## Issues / bugs?
