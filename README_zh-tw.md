@@ -2,7 +2,7 @@
 
 使用 Docker 並用網頁設定自動更新於 Cloudflare 上的 A 紀錄！
 
-## Usage
+## 使用方法
 
 1. Git clone 到你的偏好位置
 
