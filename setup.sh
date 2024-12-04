@@ -1,6 +1,25 @@
 #!/bin/bash
 
 
+# Check if cloudflare-ddns is already installed on docker
+if [ "$(docker ps -aq -f name=cloudflare-ddns)" ]; then
+    read -p "There is an existing one, do you want to reinstall and reconfigure it? (yes/no): " confirm
+    if [ $confirm != "yes" ]; then
+        echo "Exiting..."
+        echo ""
+        exit 1
+    fi
+    read -p "WARNING!!! Backup configuration before proceed! Type "sure" to proceed.: " confirm
+    if [ $confirm == "sure" ]; then
+        docker-compose down
+    else
+        echo "Exiting..."
+        echo ""
+        exit 1
+    fi
+fi
+
+
 # Create the file to store log
 CONF_FILE=./app/script/.env
 echo "Thank you for choosing cloudflare-ddns-webGUI!"
