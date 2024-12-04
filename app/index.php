@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Web Cloudflare DDNS</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -145,11 +146,9 @@
 
         <?php
         if (isset($_POST['update_crontab'])) {
-            $command = "crontab -r"; 
-            shell_exec($command);
+            shell_exec("crontab -r");
             $cron = $_POST['crontab'];
-            $command = "(crontab -l ; echo \"$cron /app/script/update-dns.sh\") | crontab -";
-            shell_exec($command);
+            shell_exec("(crontab -l ; echo \"$cron /app/script/update-dns.sh\") | crontab -");
         }
         ?>
 
@@ -171,7 +170,8 @@
         <h2>Log</h2>
         <div class="log">
             <?php
-            $log = shell_exec('cat ./script/update-dns.log');
+            //$log = shell_exec('cat ./script/update-dns.log');
+            $log = "+0000 2024-12-04 20:04:01 This is an example log.";
             echo "<p>" . htmlspecialchars($log) . "</p>";
             ?>
         </div>
