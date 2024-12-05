@@ -170,8 +170,7 @@
         <h2>Log</h2>
         <div class="log">
             <?php
-            //$log = shell_exec('cat ./script/update-dns.log');
-            $log = "+0000 2024-12-04 20:04:01 This is an example log.";
+            $log = shell_exec('cat ./script/update-dns.log');
             echo "<p>" . htmlspecialchars($log) . "</p>";
             ?>
         </div>
