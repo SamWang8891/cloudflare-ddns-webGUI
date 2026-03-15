@@ -1,6 +1,6 @@
 # cloudflare-ddns-webGUI
 
-Configure update Cloudflare DNS A record script easily with webGUI that hosts on a docker image
+Configure update Cloudflare DNS A record script easily with webGUI that hosts on a docker image.
 
 [台灣繁體中文 請按這](README_zh-tw.md)
 

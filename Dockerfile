@@ -6,7 +6,7 @@ RUN apt update && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list && \
     apt update && \
     apt install -y php8.2 php8.2-fpm jq nginx cron curl && \
-    (crontab -u www-data -l ; echo "* * * * * /app/script/update-dns.sh") | crontab -u www-data -
+    (crontab -u www-data -l ; echo "* * * * * /app/cloudflare-ddns-script/update-dns.sh") | crontab -u www-data -
 
 EXPOSE 80
 

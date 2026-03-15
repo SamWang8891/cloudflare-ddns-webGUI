@@ -4,14 +4,14 @@
 # Check if cloudflare-ddns is already installed on docker
 if [ "$(docker ps -aq -f name=cloudflare-ddns)" ]; then
     read -p "There is an existing one, do you want to reinstall and reconfigure it? (yes/no): " confirm
-    if [ $confirm != "yes" ]; then
+    if [ "$confirm" != "yes" ]; then
         echo "Exiting..."
         echo ""
         exit 1
     fi
     read -p "WARNING!!! Backup configuration before proceed! Type "sure" to proceed.: " confirm
-    if [ $confirm == "sure" ]; then
-        docker-compose down
+    if [ "$confirm" == "sure" ]; then
+        docker compose down
     else
         echo "Exiting..."
         echo ""
@@ -20,16 +20,30 @@ if [ "$(docker ps -aq -f name=cloudflare-ddns)" ]; then
 fi
 
 
-# Create the file to store log
-CONF_FILE=./app/script/.env
+# Create the file to store config
+CONF_FILE=./app/cloudflare-ddns-script/config.txt
 echo "Thank you for choosing cloudflare-ddns-webGUI!"
-echo "The conig file is stored in ./app/script/.eng"
+echo "The config file is stored in $CONF_FILE"
 if [ -f "$CONF_FILE" ]; then
     rm "$CONF_FILE"
     echo "Old file found, deleting it..."
 fi
 touch "$CONF_FILE"
 echo "Creating the config file and add empty config to it..."
+
+# Ask user for network interface
+echo ""
+echo "Network interface selection for getting public IP:"
+echo "  Press Enter to use default (let curl decide)"
+echo "  Or enter a specific interface name (e.g. eth0, wlan0)"
+read -p "Interface [default]: " selected_interface
+if [ -z "$selected_interface" ]; then
+    selected_interface="default"
+fi
+echo "Using interface: $selected_interface"
+echo ""
+
+echo "network_interface=\"$selected_interface\"" >> "$CONF_FILE"
 echo 'record="sub.domain.tld"' >> "$CONF_FILE"
 echo 'zone_id=""' >> "$CONF_FILE"
 echo 'token=""' >> "$CONF_FILE"

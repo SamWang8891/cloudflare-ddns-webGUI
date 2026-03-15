@@ -16,7 +16,17 @@
         <h2>Your Current Public IP Address is:</h2>
         <div class="ip-address">
             <?php
-            $ip = shell_exec('curl -4 -s -X GET https://api.ipify.org --max-time 10');
+            $cfg_raw = file_get_contents('./cloudflare-ddns-script/config.txt');
+            $cfg = [];
+            foreach (explode("\n", $cfg_raw) as $l) {
+                if (strpos($l, '=') !== false) {
+                    list($k, $v) = explode('=', $l, 2);
+                    $cfg[trim($k)] = trim($v, '"');
+                }
+            }
+            $iface = $cfg['network_interface'] ?? 'default';
+            $iface_opt = ($iface && $iface !== 'default') ? '--interface ' . escapeshellarg($iface) : '';
+            $ip = shell_exec("curl -4 -s -X GET https://api.ipify.org --max-time 10 $iface_opt");
             echo "<p>" . htmlspecialchars($ip) . "</p>";
             if (empty(trim($ip))) {
                 echo "<p>Request error or no network.</p>";
@@ -26,7 +36,7 @@
         <h2>Current Configuration:</h2>
         <div class="config">
             <?php
-            $config = shell_exec('cat ./script/.env');
+            $config = shell_exec('cat ./cloudflare-ddns-script/config.txt');
             $config_lines = explode("\n", $config);
             foreach ($config_lines as $line) {
                 if (strpos($line, '=') !== false) {
@@ -39,6 +49,7 @@
 
         <h2>Update Configuration:</h2>
         <form method="post" action="" class="form">
+
             <label for="record">Record:</label>
             <input type="text" id="record" name="record"><br>
 
@@ -70,7 +81,7 @@
             $proxy = $_POST['proxy'];
             $ttl = $_POST['ttl'];
 
-            $config = file_get_contents('./script/.env');
+            $config = file_get_contents('./cloudflare-ddns-script/config.txt');
             $config_lines = explode("\n", $config);
             $new_config = [];
 
@@ -78,8 +89,8 @@
                 if (strpos($line, '=') !== false) {
                     list($key, $value) = explode('=', $line, 2);
                     $value = trim($value, '"'); 
-        
-                   
+
+
                     switch ($key) {
                         case 'record':
                             if (!empty($record)) {
@@ -118,9 +129,9 @@
             }
 
             
-            file_put_contents('./script/.env', '');  
+            file_put_contents('./cloudflare-ddns-script/config.txt', '');
             $config_data = implode("\n", $new_config) . "\n";
-            file_put_contents('./script/.env', $config_data);
+            file_put_contents('./cloudflare-ddns-script/config.txt', $config_data);
 
             echo "<meta http-equiv='refresh' content='0'>";
         }
@@ -148,7 +159,16 @@
         if (isset($_POST['update_crontab'])) {
             shell_exec("crontab -r");
             $cron = $_POST['crontab'];
-            shell_exec("(crontab -l ; echo \"$cron /app/script/update-dns.sh\") | crontab -");
+            $cfg_raw = file_get_contents('./cloudflare-ddns-script/config.txt');
+            $cfg_ct = [];
+            foreach (explode("\n", $cfg_raw) as $l) {
+                if (strpos($l, '=') !== false) {
+                    list($k, $v) = explode('=', $l, 2);
+                    $cfg_ct[trim($k)] = trim($v, '"');
+                }
+            }
+            $iface_ct = $cfg_ct['network_interface'] ?? 'default';
+            shell_exec("(crontab -l ; echo \"$cron /app/cloudflare-ddns-script/update-dns.sh --interface $iface_ct\") | crontab -");
         }
         ?>
 
@@ -160,7 +180,16 @@
 
         <?php
         if (isset($_POST['force_execute'])) {
-            $command = '/app/script/update-dns.sh';
+            $cfg_raw = file_get_contents('./cloudflare-ddns-script/config.txt');
+            $cfg_fe = [];
+            foreach (explode("\n", $cfg_raw) as $l) {
+                if (strpos($l, '=') !== false) {
+                    list($k, $v) = explode('=', $l, 2);
+                    $cfg_fe[trim($k)] = trim($v, '"');
+                }
+            }
+            $iface_fe = $cfg_fe['network_interface'] ?? 'default';
+            $command = '/app/cloudflare-ddns-script/update-dns.sh --interface ' . escapeshellarg($iface_fe);
             shell_exec($command);
             echo "<p class='success-message'>Force executed: $command</p>";
         }
@@ -170,7 +199,7 @@
         <h2>Log</h2>
         <div class="log">
             <?php
-            $log = shell_exec('cat ./script/update-dns.log');
+            $log = shell_exec('cat ./cloudflare-ddns-script/update-dns.log');
             echo "<p>" . htmlspecialchars($log) . "</p>";
             ?>
         </div>
