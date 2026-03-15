@@ -1,0 +1,3 @@
+[submodule "app/cloudflare-ddns-script"]
+	path = app/cloudflare-ddns-script
+	url = git@github.com:SamWang8891/cloudflare-ddns-script.git
