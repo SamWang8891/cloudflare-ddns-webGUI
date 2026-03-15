@@ -7,7 +7,6 @@ services:
     volumes:
       - ./app:/app
       - ./app/nginx/nginx.conf:/etc/nginx/sites-available/default
-    ports:
-      - "0.0.0.0:8888:80" # Host:Container
+    network_mode: host
     container_name: cloudflare-ddns
     restart: unless-stopped

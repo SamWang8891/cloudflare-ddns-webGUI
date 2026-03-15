@@ -26,7 +26,7 @@
             }
             $iface = $cfg['network_interface'] ?? 'default';
             $iface_opt = ($iface && $iface !== 'default') ? '--interface ' . escapeshellarg($iface) : '';
-            $ip = shell_exec("curl -4 -s -X GET https://api.ipify.org --max-time 10 $iface_opt");
+            $ip = shell_exec("/usr/bin/curl -4 -s -X GET https://api.ipify.org --max-time 10 $iface_opt");
             echo "<p>" . htmlspecialchars($ip) . "</p>";
             if (empty(trim($ip))) {
                 echo "<p>Request error or no network.</p>";
@@ -199,8 +199,13 @@
         <h2>Log</h2>
         <div class="log">
             <?php
-            $log = shell_exec('cat ./cloudflare-ddns-script/update-dns.log');
-            echo "<p>" . htmlspecialchars($log) . "</p>";
+            $log_file = '/app/cloudflare-ddns-script/update-dns.log';
+            if (file_exists($log_file)) {
+                $log = file_get_contents($log_file);
+                echo "<p>" . htmlspecialchars($log) . "</p>";
+            } else {
+                echo "<p>No log file found. The script has not run yet.</p>";
+            }
             ?>
         </div>
     </div>

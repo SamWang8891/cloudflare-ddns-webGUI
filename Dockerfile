@@ -8,6 +8,6 @@ RUN apt update && \
     apt install -y php8.2 php8.2-fpm jq nginx cron curl && \
     (crontab -u www-data -l ; echo "* * * * * /app/cloudflare-ddns-script/update-dns.sh") | crontab -u www-data -
 
-EXPOSE 80
+EXPOSE 8888
 
 CMD service php8.2-fpm start && service cron start && nginx -g "daemon off;"
